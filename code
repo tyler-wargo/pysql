@@ -1,0 +1,38 @@
+import sqlite3
+
+def create_database():
+    conn = sqlite3.connect('mydatabase.db')
+    cursor = conn.cursor()
+
+    cursor.execute('CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT, email TEXT)')
+    conn.commit()
+
+    conn.close()
+    print('Database created successfully!')
+
+def insert_user(name, email):
+    conn = sqlite3.connect('mydatabase.db')
+    cursor = conn.cursor()
+
+    cursor.execute('INSERT INTO users (name, email) VALUES (?, ?)', (name, email))
+    conn.commit()
+
+    conn.close()
+    print('User inserted successfully!')
+
+def retrieve_users():
+    conn = sqlite3.connect('mydatabase.db')
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT * FROM users')
+    users = cursor.fetchall()
+
+    conn.close()
+    return users
+
+if __name__ == '__main__':
+    create_database()
+    insert_user('John Doe', 'john@example.com')
+    users = retrieve_users()
+    for user in users:
+        print(user)
